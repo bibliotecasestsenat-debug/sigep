@@ -49,7 +49,7 @@ export default function AdminClient({ usuariosIniciais }: Props) {
   }
 
   async function alterarPerfil(id: string, perfil: Perfil) {
-    const { error } = await supabase.from('usuarios').update({ perfil }).eq('id', id)
+    const { error } = await supabase.from('usuarios').update({ perfil } as never).eq('id', id)
     if (error) { alert(error.message); return }
     setUsuarios(u => u.map(x => x.id === id ? { ...x, perfil } : x))
   }
