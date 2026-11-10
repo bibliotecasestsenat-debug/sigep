@@ -113,7 +113,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '260px',
     minWidth: '260px',
     height: '100vh',
-    background: '#003366',
+    background: '#002969',
     display: 'flex',
     flexDirection: 'column',
     position: 'sticky',

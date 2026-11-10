@@ -39,7 +39,7 @@ export default function LoginPage() {
         <div style={styles.header}>
           <div style={styles.logoWrap}>
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <rect width="48" height="48" rx="12" fill="#003366"/>
+              <rect width="48" height="48" rx="12" fill="#002969"/>
               <text x="24" y="32" textAnchor="middle" fill="#e8961e" fontSize="20" fontWeight="bold" fontFamily="Inter,sans-serif">S</text>
             </svg>
           </div>
@@ -111,7 +111,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'linear-gradient(135deg, #003366 0%, #004488 50%, #002244 100%)',
+    background: 'linear-gradient(135deg, #002969 0%, #004488 50%, #002244 100%)',
     padding: '24px',
   },
   card: {
@@ -134,7 +134,7 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: '28px',
     fontWeight: '700',
-    color: '#003366',
+    color: '#002969',
     letterSpacing: '-0.5px',
   },
   subtitle: {
@@ -186,7 +186,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   btn: {
     padding: '14px',
-    background: '#003366',
+    background: '#002969',
     color: '#fff',
     border: 'none',
     borderRadius: '8px',

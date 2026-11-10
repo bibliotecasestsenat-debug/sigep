@@ -144,7 +144,7 @@ const styles: Record<string, React.CSSProperties> = {
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' },
   heading: { fontSize: '22px', fontWeight: '700', color: '#1e293b' },
   sub: { fontSize: '13px', color: '#94a3b8', marginTop: '2px' },
-  btnPrimary: { padding: '10px 18px', background: '#003366', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
+  btnPrimary: { padding: '10px 18px', background: '#002969', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
   btnSecondary: { padding: '10px 18px', background: '#f1f5f9', color: '#374151', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
   tableWrap: { background: '#fff', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', overflow: 'hidden' },
   thead: { background: '#f8fafc' },

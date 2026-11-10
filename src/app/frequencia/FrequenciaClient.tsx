@@ -262,11 +262,11 @@ const styles: Record<string, React.CSSProperties> = {
   sectionTitle: { fontSize: '16px', fontWeight: '600', color: '#1e293b' },
   input: { padding: '9px 12px', border: '1.5px solid #e2e8f0', borderRadius: '7px', fontSize: '13px', color: '#1e293b', outline: 'none', background: '#f8fafc' },
   select: { padding: '9px 12px', border: '1.5px solid #e2e8f0', borderRadius: '7px', fontSize: '13px', outline: 'none', background: '#f8fafc' },
-  btnPrimary: { padding: '10px 18px', background: '#003366', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
+  btnPrimary: { padding: '10px 18px', background: '#002969', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' },
   btnOutline: { padding: '8px 12px', background: '#fff', color: '#374151', border: '1.5px solid #e2e8f0', borderRadius: '7px', fontSize: '12px', fontWeight: '600', cursor: 'pointer' },
   thead: { background: '#f8fafc' },
   th: { padding: '11px 14px', textAlign: 'left' as const, fontSize: '11px', fontWeight: '700', color: '#64748b', textTransform: 'uppercase' as const, letterSpacing: '0.6px', borderBottom: '1px solid #e2e8f0' },
   td: { padding: '10px 14px', fontSize: '13px', color: '#374151', borderBottom: '1px solid #f1f5f9' },
-  code: { fontFamily: 'monospace', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', fontSize: '12px', color: '#003366' },
+  code: { fontFamily: 'monospace', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', fontSize: '12px', color: '#002969' },
   btnPresenca: { padding: '6px 14px', border: '1.5px solid', borderRadius: '20px', fontSize: '12px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s' },
 }

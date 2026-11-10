@@ -43,7 +43,7 @@ export default async function DashboardPage() {
 
       {/* Cards de resumo */}
       <div style={styles.cards}>
-        <StatCard label="Turmas ativas" value={totalTurmas ?? 0} icon="🏫" color="#003366" />
+        <StatCard label="Turmas ativas" value={totalTurmas ?? 0} icon="🏫" color="#002969" />
         <StatCard label="Alunos matriculados" value={totalAlunos ?? 0} icon="👥" color="#16a34a" />
         <StatCard label="Cursos cadastrados" value={totalCursos ?? 0} icon="📚" color="#e8961e" />
       </div>
@@ -206,6 +206,6 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '2px 6px',
     borderRadius: '4px',
     fontSize: '12px',
-    color: '#003366',
+    color: '#002969',
   },
 }
