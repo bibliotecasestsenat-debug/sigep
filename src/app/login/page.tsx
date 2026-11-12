@@ -37,15 +37,24 @@ export default function LoginPage() {
       <div style={styles.card}>
         {/* Logo / Header */}
         <div style={styles.header}>
+          {/* Logo SEST SENAT oficial */}
           <div style={styles.logoWrap}>
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <rect width="48" height="48" rx="12" fill="#002969"/>
-              <text x="24" y="32" textAnchor="middle" fill="#e8961e" fontSize="20" fontWeight="bold" fontFamily="Inter,sans-serif">S</text>
-            </svg>
+            <div style={styles.logoBox}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 56" width="220" height="42">
+                {/* SEST */}
+                <text x="8" y="34" fontFamily="Arial,sans-serif" fontWeight="800" fontSize="24" fill="#FFFFFF" letterSpacing="2">SEST</text>
+                <text x="8" y="48" fontFamily="Arial,sans-serif" fontWeight="400" fontSize="7" fill="rgba(255,255,255,0.65)" letterSpacing="0.4">SERVIÇO SOCIAL DO TRANSPORTE</text>
+                {/* divisor */}
+                <line x1="102" y1="6" x2="102" y2="50" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5"/>
+                {/* SENAT */}
+                <text x="112" y="34" fontFamily="Arial,sans-serif" fontWeight="800" fontSize="24" fill="#FFFFFF" letterSpacing="2">SENAT</text>
+                <text x="112" y="48" fontFamily="Arial,sans-serif" fontWeight="400" fontSize="7" fill="rgba(255,255,255,0.65)" letterSpacing="0.4">SERV. NAC. DE APRENDIZAGEM DO TRANSPORTE</text>
+              </svg>
+            </div>
           </div>
           <h1 style={styles.title}>SIGEP</h1>
-          <p style={styles.subtitle}>Sistema de Gestão Educacional</p>
-          <p style={styles.unit}>SEST SENAT — Serra/ES · DN122</p>
+          <p style={styles.subtitle}>Sistema de Gestão do Programa de Aprendizagem</p>
+          <p style={styles.unit}>Unidade Operacional Serra — DN122</p>
         </div>
 
         {/* Form */}
@@ -129,7 +138,14 @@ const styles: Record<string, React.CSSProperties> = {
   logoWrap: {
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: '16px',
+    marginBottom: '20px',
+  },
+  logoBox: {
+    background: '#002969',
+    borderRadius: '12px',
+    padding: '14px 20px',
+    display: 'inline-flex',
+    boxShadow: '0 4px 16px rgba(0,41,105,0.3)',
   },
   title: {
     fontSize: '28px',

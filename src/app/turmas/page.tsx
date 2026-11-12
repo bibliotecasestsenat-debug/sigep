@@ -7,34 +7,22 @@ export default async function TurmasPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: usuario } = await supabase
-    .from('usuarios').select('*').eq('id', user.id).single()
-  if (!usuario) redirect('/login')
+  // Buscar dados em paralelo para reduzir latência
+  const [usuarioRes, turmasRes, cursosRes, professoresRes] = await Promise.all([
+    supabase.from('usuarios').select('*').eq('id', user.id).single(),
+    supabase.from('turmas').select(`*, curso:cursos(id, nome), professor:usuarios(id, nome, perfil)`).order('created_at', { ascending: false }),
+    supabase.from('cursos').select('id, nome').order('nome'),
+    supabase.from('usuarios').select('id, nome, perfil').in('perfil', ['prof_efetivo', 'prof_cnpj']).order('nome'),
+  ])
 
-  const { data: turmas } = await supabase
-    .from('turmas')
-    .select(`
-      *,
-      curso:cursos(id, nome),
-      professor:usuarios(id, nome, perfil)
-    `)
-    .order('created_at', { ascending: false })
-
-  const { data: cursos } = await supabase
-    .from('cursos').select('id, nome').order('nome')
-
-  const { data: professores } = await supabase
-    .from('usuarios')
-    .select('id, nome, perfil')
-    .in('perfil', ['prof_efetivo', 'prof_cnpj'])
-    .order('nome')
+  if (!usuarioRes.data) redirect('/login')
 
   return (
     <TurmasClient
-      turmasIniciais={turmas ?? []}
-      cursos={cursos ?? []}
-      professores={professores ?? []}
-      usuario={usuario}
+      turmasIniciais={turmasRes.data ?? []}
+      cursos={cursosRes.data ?? []}
+      professores={professoresRes.data ?? []}
+      usuario={usuarioRes.data}
     />
   )
 }

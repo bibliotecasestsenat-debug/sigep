@@ -13,6 +13,17 @@ interface Props { turmas: Turma[]; usuario: Usuario }
 const DIAS_LABEL: Record<string, string> = { segunda: 'Segunda', terca: 'Terça', quarta: 'Quarta', quinta: 'Quinta', sexta: 'Sexta', sabado: 'Sábado' }
 const TURNO_LABEL: Record<string, string> = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' }
 
+// Mapeamento dia → Day of Week (JS: 0=Dom)
+const DIA_TO_DOW: Record<string, number> = { segunda: 1, terca: 2, quarta: 3, quinta: 4, sexta: 5, sabado: 6 }
+
+/** Verifica se a data selecionada é um dia de aula da turma */
+function isDiaDeAula(dateStr: string, diasSemana: string[]): boolean {
+  if (!diasSemana || diasSemana.length === 0) return true // sem restrição cadastrada
+  const [y, m, d] = dateStr.split('-').map(Number)
+  const dow = new Date(y, m - 1, d).getDay()
+  return diasSemana.map(d => DIA_TO_DOW[d]).includes(dow)
+}
+
 export default function FrequenciaClient({ turmas, usuario }: Props) {
   const [codigoDigitado, setCodigoDigitado] = useState('')
   const [filtroDia, setFiltroDia] = useState('')
@@ -152,30 +163,58 @@ export default function FrequenciaClient({ turmas, usuario }: Props) {
                   ? turmasSelecionadas[0].codigo_sigop + ' — ' + turmasSelecionadas[0].nome
                   : `${turmasSelecionadas.length} turmas selecionadas`}
               </h2>
-              <p style={{ fontSize: '13px', color: '#64748b' }}>
+              {/* Dias e turno da turma */}
+              {turmasSelecionadas.length === 1 && (turmasSelecionadas[0].dias_semana?.length || turmasSelecionadas[0].turno) && (
+                <div style={{ display: 'flex', gap: '8px', marginTop: '6px', flexWrap: 'wrap' }}>
+                  {turmasSelecionadas[0].dias_semana?.length ? (
+                    <span style={styles.badge}>
+                      Dias: {turmasSelecionadas[0].dias_semana.map(d => DIAS_LABEL[d] || d).join(' · ')}
+                    </span>
+                  ) : null}
+                  {turmasSelecionadas[0].turno ? (
+                    <span style={styles.badge}>
+                      Turno: {TURNO_LABEL[turmasSelecionadas[0].turno] || turmasSelecionadas[0].turno}
+                    </span>
+                  ) : null}
+                </div>
+              )}
+              <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>
                 {alunos.length} aluno{alunos.length !== 1 ? 's' : ''} · {presentes} presente{presentes !== 1 ? 's' : ''}
               </p>
             </div>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <label style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>Data:</label>
-              <input
-                type="date"
-                style={styles.input}
-                value={data}
-                onChange={async e => {
-                  setData(e.target.value)
-                  if (turmasSelecionadas.length) {
-                    // Recarregar registros para nova data
-                    const { data: freqs } = await supabase.from('frequencias').select('aluno_id, presente, justificativa').in('turma_id', turmasSelecionadas.map(t => t.id)).eq('data', e.target.value)
-                    const map: Record<string, RegistroFreq> = {}
-                    alunos.forEach(a => { map[a.id] = { aluno_id: a.id, presente: false } })
-                    ;(freqs ?? []).forEach((f: { aluno_id: string; presente: boolean; justificativa?: string }) => { map[f.aluno_id] = { aluno_id: f.aluno_id, presente: f.presente, justificativa: f.justificativa } })
-                    setRegistros(map)
-                  }
-                }}
-              />
-              <button style={styles.btnOutline} onClick={() => marcarTodos(true)}>✓ Todos presentes</button>
-              <button style={styles.btnOutline} onClick={() => marcarTodos(false)}>✗ Todos ausentes</button>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', flexDirection: 'column' as const }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <label style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>Data da chamada:</label>
+                <input
+                  type="date"
+                  style={{
+                    ...styles.input,
+                    borderColor: turmasSelecionadas.length === 1 && turmasSelecionadas[0].dias_semana?.length && !isDiaDeAula(data, turmasSelecionadas[0].dias_semana) ? '#f59e0b' : '#e2e8f0'
+                  }}
+                  value={data}
+                  onChange={async e => {
+                    setData(e.target.value)
+                    if (turmasSelecionadas.length) {
+                      const { data: freqs } = await supabase.from('frequencias').select('aluno_id, presente, justificativa').in('turma_id', turmasSelecionadas.map(t => t.id)).eq('data', e.target.value)
+                      const map: Record<string, RegistroFreq> = {}
+                      alunos.forEach(a => { map[a.id] = { aluno_id: a.id, presente: false } })
+                      ;(freqs ?? []).forEach((f: { aluno_id: string; presente: boolean; justificativa?: string }) => { map[f.aluno_id] = { aluno_id: f.aluno_id, presente: f.presente, justificativa: f.justificativa } })
+                      setRegistros(map)
+                    }
+                  }}
+                />
+              </div>
+              {/* Aviso se data não é dia de aula */}
+              {turmasSelecionadas.length === 1 && turmasSelecionadas[0].dias_semana?.length &&
+                !isDiaDeAula(data, turmasSelecionadas[0].dias_semana) && (
+                <div style={styles.warnBadge}>
+                  ⚠ Este dia não consta no calendário desta turma ({turmasSelecionadas[0].dias_semana.map(d => DIAS_LABEL[d]).join(', ')})
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button style={styles.btnOutline} onClick={() => marcarTodos(true)}>✓ Todos presentes</button>
+                <button style={styles.btnOutline} onClick={() => marcarTodos(false)}>✗ Todos ausentes</button>
+              </div>
             </div>
           </div>
 
@@ -269,4 +308,6 @@ const styles: Record<string, React.CSSProperties> = {
   td: { padding: '10px 14px', fontSize: '13px', color: '#374151', borderBottom: '1px solid #f1f5f9' },
   code: { fontFamily: 'monospace', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', fontSize: '12px', color: '#002969' },
   btnPresenca: { padding: '6px 14px', border: '1.5px solid', borderRadius: '20px', fontSize: '12px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s' },
+  badge: { display: 'inline-block', background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', borderRadius: '20px', padding: '2px 10px', fontSize: '11.5px', fontWeight: '600' },
+  warnBadge: { background: '#fffbeb', color: '#92400e', border: '1px solid #fde68a', borderRadius: '7px', padding: '7px 12px', fontSize: '12px', fontWeight: '500' },
 }

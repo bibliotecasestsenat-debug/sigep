@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 60" width="320" height="60">
+  <!-- SEST block -->
+  <rect x="0" y="0" width="140" height="60" fill="#002969"/>
+  <text x="10" y="22" font-family="Arial,sans-serif" font-weight="800" font-size="18" fill="#FFFFFF" letter-spacing="1">SEST</text>
+  <text x="10" y="42" font-family="Arial,sans-serif" font-weight="400" font-size="8.5" fill="#FFFFFF" letter-spacing="0.5">SERVIÇO SOCIAL DO TRANSPORTE</text>
+
+  <!-- divider -->
+  <rect x="140" y="8" width="2" height="44" fill="#FFFFFF" opacity="0.3"/>
+
+  <!-- SENAT block -->
+  <rect x="142" y="0" width="178" height="60" fill="#002969"/>
+  <text x="152" y="22" font-family="Arial,sans-serif" font-weight="800" font-size="18" fill="#FFFFFF" letter-spacing="1">SENAT</text>
+  <text x="152" y="42" font-family="Arial,sans-serif" font-weight="400" font-size="8.5" fill="#FFFFFF" letter-spacing="0.5">SERVIÇO NACIONAL DE APRENDIZAGEM</text>
+  <text x="152" y="53" font-family="Arial,sans-serif" font-weight="400" font-size="8.5" fill="#FFFFFF" letter-spacing="0.5">DO TRANSPORTE</text>
+</svg>

@@ -12,7 +12,7 @@ export default async function DocumentosPage() {
 
   const { data: turmas } = await supabase
     .from('turmas')
-    .select('id, codigo_sigop, nome, turno, curso:cursos(nome)')
+    .select('id, codigo_sigop, nome, turno, dias_semana, curso:cursos(nome)')
     .order('codigo_sigop')
 
   return <DocumentosClient turmas={turmas ?? []} usuario={usuario} />

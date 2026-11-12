@@ -52,10 +52,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 })
   }
 
-  // O trigger handle_new_user cria o registro em usuarios automaticamente
-  // Mas garantimos o perfil correto
+  // O trigger handle_new_user pode não ter criado o registro ainda.
+  // Usamos upsert para garantir que o registro existe com os dados corretos.
   if (data.user) {
-    await supabaseAdmin.from('usuarios').update({ nome, perfil }).eq('id', data.user.id)
+    await supabaseAdmin.from('usuarios').upsert({
+      id: data.user.id,
+      email,
+      nome,
+      perfil,
+    }, { onConflict: 'id' })
   }
 
   return NextResponse.json({ success: true, userId: data.user?.id })

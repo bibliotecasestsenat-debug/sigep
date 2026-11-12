@@ -7,34 +7,22 @@ export default async function AlunosPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: usuario } = await supabase.from('usuarios').select('*').eq('id', user.id).single()
-  if (!usuario) redirect('/login')
+  // Buscar dados em paralelo para reduzir latência
+  const [usuarioRes, alunosRes, turmasRes, cursosRes] = await Promise.all([
+    supabase.from('usuarios').select('*').eq('id', user.id).single(),
+    supabase.from('alunos').select(`*, turma:turmas(id, codigo_sigop, nome, turno, dias_semana, curso:cursos(id, nome))`).order('nome'),
+    supabase.from('turmas').select('id, codigo_sigop, nome, turno, curso:cursos(nome)').order('codigo_sigop'),
+    supabase.from('cursos').select('id, nome').order('nome'),
+  ])
 
-  const { data: alunos } = await supabase
-    .from('alunos')
-    .select(`
-      *,
-      turma:turmas(
-        id, codigo_sigop, nome, turno, dias_semana,
-        curso:cursos(id, nome)
-      )
-    `)
-    .order('nome')
-
-  const { data: turmas } = await supabase
-    .from('turmas')
-    .select('id, codigo_sigop, nome, turno, curso:cursos(nome)')
-    .order('codigo_sigop')
-
-  const { data: cursos } = await supabase
-    .from('cursos').select('id, nome').order('nome')
+  if (!usuarioRes.data) redirect('/login')
 
   return (
     <AlunosClient
-      alunosIniciais={alunos ?? []}
-      turmas={turmas ?? []}
-      cursos={cursos ?? []}
-      usuario={usuario}
+      alunosIniciais={alunosRes.data ?? []}
+      turmas={turmasRes.data ?? []}
+      cursos={cursosRes.data ?? []}
+      usuario={usuarioRes.data}
     />
   )
 }
